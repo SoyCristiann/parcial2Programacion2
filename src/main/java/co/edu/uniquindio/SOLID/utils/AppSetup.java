@@ -90,16 +90,16 @@ public class AppSetup {
 
     public void inicializarProveedores() {
         Minimercado minimercado = Minimercado.getInstancia();
-        minimercado.agregarProveedor(new Proveedor("900111222-3", "Cafés del Quindío S.A.", "Diana Torres", "compras@cafesquindio.com", "606-7440001"));
-        minimercado.agregarProveedor(new Proveedor("901234567-8", "Agrofrutas del Eje", "Luis Mejía", "ventas@agrofrutas.com", "606-7331122"));
-        minimercado.agregarProveedor(new Proveedor("900765432-1", "Lácteos Andinos", "María Rojas", "contacto@lacteosandinos.co", "606-7213344"));
+        minimercado.addProveedor(new Proveedor("900111222-3", "Cafés del Quindío S.A.", "Diana Torres", "compras@cafesquindio.com", "606-7440001"));
+        minimercado.addProveedor(new Proveedor("901234567-8", "Agrofrutas del Eje", "Luis Mejía", "ventas@agrofrutas.com", "606-7331122"));
+        minimercado.addProveedor(new Proveedor("900765432-1", "Lácteos Andinos", "María Rojas", "contacto@lacteosandinos.co", "606-7213344"));
     }
 
     public void inicializarEmpleados() {
         Minimercado minimercado = Minimercado.getInstancia();
-        minimercado.agregarEmpleado(new Empleado("EMP-001", "Julian", Empleado.Rol.CAJERO));
-        minimercado.agregarEmpleado(new Empleado("EMP-002", "Andrea", Empleado.Rol.BODEGUERO));
-        minimercado.agregarEmpleado(new Empleado("EMP-003", "Pablo", Empleado.Rol.CAJERO));
+        minimercado.addEmpleado(new Empleado("EMP-001", "Julian", Empleado.Rol.CAJERO));
+        minimercado.addEmpleado(new Empleado("EMP-002", "Andrea", Empleado.Rol.BODEGUERO));
+        minimercado.addEmpleado(new Empleado("EMP-003", "Pablo", Empleado.Rol.CAJERO));
     }
 
 }

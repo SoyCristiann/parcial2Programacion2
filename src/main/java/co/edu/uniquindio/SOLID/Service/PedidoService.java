@@ -23,18 +23,37 @@ public class PedidoService {
         this.clienteService = new ClienteService();
     }
 
+    //Se ajusta el método crear pedido para que trabaje con el stock.
     public Pedido crearPedido(PedidoDTO pedidoDTO) {
 
         List<ItemPedido> items = new ArrayList<ItemPedido>();
 
+        // En las siguientes líneas se hacen las validaciones de Stock que funcionar;an antes de finalizar el pedido.
         for (ItemPedidoDTO item : pedidoDTO.itemsPedido) {
-            Producto producto = catalogoProductosService.buscarProducto(item.skuProducto);
-            if (producto != null) {
-                ItemPedido itemPedido = new ItemPedido(producto, item.cantidad);
-                items.add(itemPedido);
-            }
-        }
 
+            Producto producto = catalogoProductosService.buscarProducto(item.skuProducto);
+
+            if (producto == null) {
+                // Validación adicional por si en el producto no existe por alguna razón
+                throw new IllegalArgumentException("El producto con SKU " + item.skuProducto + " no fue encontrado.");
+            }
+
+            // Condicional para validación del Stock
+            if (!producto.tieneStockSuficiente(item.cantidad)) {
+                // Si el stock es 0 o insuficiente, lanzamos una excepción
+                throw new IllegalArgumentException("Stock insuficiente para el producto " + producto.getNombre() +
+                        ". Stock actual: " + producto.getStock() +
+                        ", Requerido: " + item.cantidad);
+            }
+
+            //Si la validación anterior del stock está ok, realiza el descuento de la cantidad,
+            producto.disminuirStock(item.cantidad);
+
+            // Crear el item de pedido
+            ItemPedido itemPedido = new ItemPedido(producto, item.cantidad);
+            items.add(itemPedido);
+        }
+        //Se continúa con la lógica de creación del pedido
         Cliente cliente = clienteService.buscarClienteEntity(pedidoDTO.idCliente);
 
         PedidoBuilder pedidoBuilder = new PedidoBuilder(pedidoDTO.codigo,cliente,items, pedidoDTO.direccionEnvio);
@@ -62,6 +81,7 @@ public class PedidoService {
 
         return pedido;
     }
+
 
     public double calcularSubtotal(Pedido pedido) {
         double subtotal = 0;

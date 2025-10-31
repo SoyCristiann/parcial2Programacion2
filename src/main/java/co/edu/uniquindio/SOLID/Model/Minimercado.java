@@ -10,6 +10,7 @@ public class Minimercado {
     List<Empleado> empleados;
     List<Proveedor> proveedores;
     List<MovimientoInventario> movimientos;
+    List<EntradaInventario> entradasInventario;
 
     private static Minimercado instancia;
 
@@ -20,8 +21,10 @@ public class Minimercado {
         empleados = new ArrayList<>();
         proveedores = new ArrayList<>();
         movimientos = new ArrayList<>();
+        entradasInventario = new ArrayList<>();
     }
 
+    //Obtiene la instancia global
     public static Minimercado getInstancia() {
         if (instancia == null) {
             instancia = new Minimercado();
@@ -29,6 +32,7 @@ public class Minimercado {
         return instancia;
     }
 
+    //Métodos de agregación
     public void addProducto(Producto producto) {
         productos.add(producto);
     }
@@ -40,6 +44,26 @@ public class Minimercado {
     public void addCliente(Cliente cliente) {
         clientes.add(cliente);
     }
+
+    public void addEmpleado(Empleado empleado) {
+        empleados.add(empleado);
+    }
+
+    public void addProveedor(Proveedor proveedor) {
+        proveedores.add(proveedor);
+    }
+
+    public void addEntradaInventario(EntradaInventario entrada) {
+        if (entrada != null) {
+            entradasInventario.add(entrada);
+        }
+    }
+
+    public void registrarMovimiento(MovimientoInventario movimiento) {
+        movimientos.add(movimiento);
+    }
+
+    //Métodos para traer información (get)
 
     public List<Producto> getProductos() {
         return productos;
@@ -53,44 +77,21 @@ public class Minimercado {
         return clientes;
     }
 
-    //Empleados
-    public void addEmpleado(Empleado empleado) {
-        empleados.add(empleado);
-    }
     public List<Empleado> getEmpleados() { 
         return empleados; 
     }
 
-    //Proveedores
-
     public List<Proveedor> getProveedores() { 
         return proveedores; 
     }
-    public void addProveedor(Proveedor proveedor) {
-        proveedores.add(proveedor);
+
+    public List<EntradaInventario> getEntradasInventario() {
+        return entradasInventario;
     }
-
-
-
 
     public List<MovimientoInventario> getMovimientos() { 
         return movimientos; 
     }
 
-    public void registrarMovimiento(MovimientoInventario movimiento) { 
-        movimientos.add(movimiento); 
-    }
-    
-    public void agregarEmpleado(Empleado empleado) {
-        if (empleado != null) {
-            empleados.add(empleado);
-        }
-    }
-
-    public void agregarProveedor(Proveedor proveedor) {
-        if (proveedor != null) {
-            proveedores.add(proveedor);
-        }
-    }
 
 }

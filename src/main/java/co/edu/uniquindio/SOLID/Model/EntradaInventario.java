@@ -34,7 +34,7 @@ public class EntradaInventario {
 
     public void confirmar() {
         if (confirmada) return;
-        Minimercado minimercado = Minimercado.getInstancia();
+        //Minimercado minimercado = Minimercado.getInstancia();
         for (ItemEntrada item : items) {
             Producto producto = item.getProducto();
             producto.aumentarStock(item.getCantidad());
@@ -46,7 +46,7 @@ public class EntradaInventario {
                     id
             );
             movimientosGenerados.add(mov);
-            minimercado.registrarMovimiento(mov);
+            //minimercado.registrarMovimiento(mov);
         }
         this.confirmada = true;
     }

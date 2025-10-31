@@ -1,27 +1,34 @@
 package co.edu.uniquindio.SOLID.Model.DTO;
 
+import co.edu.uniquindio.SOLID.Model.ItemEntrada;
+import co.edu.uniquindio.SOLID.Model.MovimientoInventario;
+import co.edu.uniquindio.SOLID.Model.Proveedor;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntradaInventarioDTO {
-    private String idEntrada;
+    private String id;
+    private Proveedor proveedor;
     private LocalDateTime fecha;
-    private String nitProveedor;
     private List<ItemEntradaDTO> items;
+    private String nit;
 
-    public EntradaInventarioDTO(String idEntrada, LocalDateTime fecha, String nitProveedor, List<ItemEntradaDTO> items) {
-        this.idEntrada = idEntrada;
-        this.fecha = fecha;
-        this.nitProveedor = nitProveedor;
-        this.items = items;
+    public EntradaInventarioDTO(String id, Proveedor proveedor) {
+        this.id = id;
+        this.proveedor = proveedor;
+        this.fecha = LocalDateTime.now();
+        this.items = new ArrayList<>();
+        this.nit = proveedor.getNit();
     }
 
     public String getIdEntrada() {
-        return idEntrada;
+        return id;
     }
 
     public void setIdEntrada(String idEntrada) {
-        this.idEntrada = idEntrada;
+        this.id = idEntrada;
     }
 
     public LocalDateTime getFecha() {
@@ -33,11 +40,11 @@ public class EntradaInventarioDTO {
     }
 
     public String getNitProveedor() {
-        return nitProveedor;
+        return nit;
     }
 
-    public void setNitProveedor(String nitProveedor) {
-        this.nitProveedor = nitProveedor;
+    public void setNitProveedor(Proveedor proveedor) {
+        this.nit = proveedor.getNit();
     }
 
     public List<ItemEntradaDTO> getItems() {
@@ -48,13 +55,4 @@ public class EntradaInventarioDTO {
         this.items = items;
     }
 
-    @Override
-    public String toString() {
-        return "EntradaInventarioDTO{" +
-                "idEntrada='" + idEntrada + '\'' +
-                ", fecha='" + fecha + '\'' +
-                ", nitProveedor='" + nitProveedor + '\'' +
-                ", items=" + items +
-                '}';
-    }
 }

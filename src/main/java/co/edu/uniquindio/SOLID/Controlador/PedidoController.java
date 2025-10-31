@@ -2,6 +2,7 @@ package co.edu.uniquindio.SOLID.Controlador;
 
 import co.edu.uniquindio.SOLID.Model.*;
 import co.edu.uniquindio.SOLID.Model.DTO.*;
+import co.edu.uniquindio.SOLID.Service.Fachadas.InventarioFacade;
 import co.edu.uniquindio.SOLID.Service.Fachadas.MinimercadoFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,10 +43,12 @@ public class PedidoController implements Initializable {
 
     private MinimercadoFacade minimercadoFacade;
     private ObservableList<ItemPedidoDTO> itemsPedido;
+    private InventarioFacade inventarioFacade;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         minimercadoFacade = new MinimercadoFacade();
+        inventarioFacade = new InventarioFacade();
         itemsPedido = FXCollections.observableArrayList();
         
         // Configurar tabla
@@ -135,7 +138,7 @@ public class PedidoController implements Initializable {
 
     private void cargarProductos() {
         if (cmbProductos != null) {
-            List<ProductoDTO> productosDTO = minimercadoFacade.obtenerTodosLosProductos();
+            List<ProductoDTO> productosDTO = inventarioFacade.obtenerTodosLosProductos();
             cmbProductos.setItems(FXCollections.observableArrayList(productosDTO));
             
             // Configurar cómo se muestra el producto
@@ -351,7 +354,7 @@ public class PedidoController implements Initializable {
     }
 
     private ProductoDTO buscarProductoPorSku(String sku) {
-        return minimercadoFacade.buscarProductoPorSku(sku);
+        return inventarioFacade.buscarProductoPorSku(sku);
     }
 
     private void mostrarError(String mensaje) {
@@ -369,4 +372,5 @@ public class PedidoController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
 }
