@@ -123,7 +123,7 @@ public class Minimercado {
         if (buscarProveedor(nit) != null) {
             throw new IllegalArgumentException("Ya existe un proveedor con ese NIT");
         }
-        Proveedor proveedor = new Proveedor(nit, nombre, contacto != null ? contacto : "", email != null ? email : "", telefono != null ? telefono : "");
+        Proveedor proveedor = new Proveedor(nit, nombre, contacto != null ? contacto : "", email != null ? email : "", telefono != null ? telefono : "", dto.getActivo());
         proveedores.add(proveedor);
         return proveedor;
     }
