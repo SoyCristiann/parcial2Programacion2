@@ -1,14 +1,7 @@
 package co.edu.uniquindio.SOLID.Service.Fachadas;
 
-import co.edu.uniquindio.SOLID.Model.DTO.ClienteDTO;
-import co.edu.uniquindio.SOLID.Model.DTO.ProductoDTO;
-import co.edu.uniquindio.SOLID.Model.DTO.PedidoDTO;
-import co.edu.uniquindio.SOLID.Model.DTO.ItemPedidoDTO;
-import co.edu.uniquindio.SOLID.Model.DTO.ResumenPedidoDTO;
-import co.edu.uniquindio.SOLID.Service.ClienteService;
-import co.edu.uniquindio.SOLID.Service.ProductoService;
-import co.edu.uniquindio.SOLID.Service.PedidoService;
-import co.edu.uniquindio.SOLID.Service.CatalogoProductosService;
+import co.edu.uniquindio.SOLID.Model.DTO.*;
+import co.edu.uniquindio.SOLID.Service.*;
 
 import java.util.List;
 
@@ -21,10 +14,12 @@ public class MinimercadoFacade {
     private final ClienteService clienteService;
     private final ProductoService productoService;
     private final PedidoService pedidoService;
+    private final ProveedorService proveedorService;
     
     public MinimercadoFacade() {
         this.clienteService = new ClienteService();
         this.productoService = new ProductoService();
+        this.proveedorService= new ProveedorService();
         CatalogoProductosService catalogoProductosService = new CatalogoProductosService();
         this.pedidoService = new PedidoService(catalogoProductosService);
     }
@@ -96,5 +91,18 @@ public class MinimercadoFacade {
     
     public double calcularTotal(double subtotal, double costoEnvio) {
         return pedidoService.calcularTotal(subtotal, costoEnvio);
+    }
+
+    //Proveedores
+    public List<ProveedorDTO> obtenerTodosLosProveedores() {
+        return proveedorService.listarProveedores();
+    }
+
+    public boolean crearProveedor(ProveedorDTO proveedorDTO) {
+        return proveedorService.crearProveedor(proveedorDTO);
+    }
+
+    public boolean actualizarProveedor(ProveedorDTO proveedorDTO) {
+        return proveedorService.actualizarProveedor(proveedorDTO);
     }
 }

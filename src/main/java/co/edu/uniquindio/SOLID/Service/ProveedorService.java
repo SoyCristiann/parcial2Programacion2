@@ -1,6 +1,8 @@
 package co.edu.uniquindio.SOLID.Service;
 
 import co.edu.uniquindio.SOLID.Model.DTO.ProveedorDTO;
+import co.edu.uniquindio.SOLID.Model.Empleado;
+import co.edu.uniquindio.SOLID.Model.Minimercado;
 import co.edu.uniquindio.SOLID.Model.Proveedor;
 import co.edu.uniquindio.SOLID.utils.Mappers.ProveedorMapper;
 
@@ -8,64 +10,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProveedorService {
+    private final Minimercado minimercado;
 
-    private final List<Proveedor> proveedores = new ArrayList<>();
+    public ProveedorService() {
+        this.minimercado = Minimercado.getInstancia();
+    }
 
 
-    public ProveedorDTO crearProveedor(ProveedorDTO dto) {
-        if (buscarProveedor(dto.getNit()) != null) {
+    public boolean crearProveedor(ProveedorDTO proveedorDTO) {
+        if (buscarProveedorEntity(proveedorDTO.getNit()) != null) {
             throw new IllegalArgumentException("Ya existe un proveedor con ese NIT");
         }
-
-        if (!esEmailValido(dto.getEmail())) {
+        if (!esEmailValido(proveedorDTO.getEmail())) {
             throw new IllegalArgumentException("El formato del correo electrónico no es válido");
         }
-
-        Proveedor proveedor = ProveedorMapper.toEntity(dto);
-        proveedor.setActivo(true);
-        proveedores.add(proveedor);
-
-        return ProveedorMapper.toDTO(proveedor);
+        Proveedor proveedor = ProveedorMapper.toEntity(proveedorDTO);
+        minimercado.addProveedor(proveedor);
+        return true;
     }
 
 
-    private Proveedor buscarProveedor(String nit) {
-        for (Proveedor p : proveedores) {
-            if (p.getNit().equalsIgnoreCase(nit)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-
-    public ProveedorDTO actualizarProveedor(ProveedorDTO dto) {
-        Proveedor proveedor = buscarProveedor(dto.getNit());
+    public boolean actualizarProveedor(ProveedorDTO proveedorDTO) {
+        Proveedor proveedor = buscarProveedorEntity(proveedorDTO.getNit());
         if (proveedor == null) {
-            throw new IllegalArgumentException("Proveedor no encontrado: " + dto.getNit());
+            throw new IllegalArgumentException("Proveedor no encontrado: " + proveedorDTO.getNit());
         }
 
-        if (!esEmailValido(dto.getEmail())) {
+        if (!esEmailValido(proveedorDTO.getEmail())) {
             throw new IllegalArgumentException("El formato del correo electrónico no es válido");
         }
-
-        ProveedorMapper.updateEntityFromDTO(proveedor, dto);
-        return ProveedorMapper.toDTO(proveedor);
+        ProveedorMapper.updateEntityFromDTO(proveedor, proveedorDTO);
+        return true;
     }
 
 
-    public void eliminarProveedor(String nit) {
-        Proveedor proveedor = buscarProveedor(nit);
+    public boolean eliminarProveedor(String nit) {
+        Proveedor proveedor = buscarProveedorEntity(nit);
         if (proveedor == null) {
             throw new IllegalArgumentException("Proveedor no encontrado: " + nit);
         }
-        proveedores.remove(proveedor);
+        minimercado.getProveedores().remove(proveedor);
+        return true;
     }
 
 
     public List<ProveedorDTO> listarProveedores() {
         List<ProveedorDTO> listaDTO = new ArrayList<>();
-        for (Proveedor p : proveedores) {
+        for (Proveedor p : minimercado.getProveedores()) {
             listaDTO.add(ProveedorMapper.toDTO(p));
         }
         return listaDTO;
@@ -73,28 +64,38 @@ public class ProveedorService {
 
 
      // Activa un proveedor
-
-    public void activarProveedor(String nit) {
-        Proveedor proveedor = buscarProveedor(nit);
+    public boolean activarProveedor(String nit) {
+        Proveedor proveedor= buscarProveedorEntity(nit);
         if (proveedor == null) {
             throw new IllegalArgumentException("Proveedor no encontrado: " + nit);
         }
         proveedor.activar();
+        return true;
     }
 
 
      // Inactiva un proveedor
 
-    public void inactivarProveedor(String nit) {
-        Proveedor proveedor = buscarProveedor(nit);
+    public boolean inactivarProveedor(String nit) {
+        Proveedor proveedor = buscarProveedorEntity(nit);
         if (proveedor == null) {
             throw new IllegalArgumentException("Proveedor no encontrado: " + nit);
         }
         proveedor.inactivar();
+        return true;
     }
 
 
     private boolean esEmailValido(String email) {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
+
+    public Proveedor buscarProveedorEntity(String nit){
+        for(Proveedor p: minimercado.getProveedores()){
+            if(p.getNit().equals(nit)){
+                return p;
+            }
+        }
+        return null;
     }
 }

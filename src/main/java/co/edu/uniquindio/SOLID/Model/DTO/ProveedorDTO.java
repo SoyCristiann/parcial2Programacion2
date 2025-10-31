@@ -9,7 +9,7 @@ public class ProveedorDTO {
     private String telefono;
     private boolean activo;
 
-    public ProveedorDTO( String nit, String nombre, String contacto, String email, String telefono, boolean activo) {
+    public ProveedorDTO( String nit, String nombre, String contacto, String email, String telefono) {
         this.nit = nit;
         this.nombre = nombre;
         this.contacto = contacto;
@@ -68,14 +68,8 @@ public class ProveedorDTO {
 
     @Override
     public String toString() {
-        return "ProveedorDTO{" +
-                "nit='" + nit + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", contacto='" + contacto + '\'' +
-                ", email='" + email + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", activo='" + activo + '\'' +
-                '}';
+
+        return nombre != null ? nombre : (nit != null ? nit : "");
     }
 
 

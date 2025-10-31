@@ -1,7 +1,10 @@
 package co.edu.uniquindio.SOLID.Controlador;
 
+import co.edu.uniquindio.SOLID.Model.DTO.EmpleadoDTO;
 import co.edu.uniquindio.SOLID.Model.Empleado;
 import co.edu.uniquindio.SOLID.Model.Minimercado;
+import co.edu.uniquindio.SOLID.Service.EmpleadoService;
+import co.edu.uniquindio.SOLID.Service.Fachadas.EmpresaAdminFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,18 +19,20 @@ public class EmpleadosController implements Initializable {
     @FXML private TextField txtEmpId;
     @FXML private TextField txtEmpNombre;
     @FXML private ComboBox<String> cmbEmpRol;
-    @FXML private TableView<Empleado> tblEmpleados;
-    @FXML private TableColumn<Empleado, String> colEmpId;
-    @FXML private TableColumn<Empleado, String> colEmpNombre;
-    @FXML private TableColumn<Empleado, String> colEmpRol;
-    @FXML private TableColumn<Empleado, String> colEmpEstado;
+    @FXML private TableView<EmpleadoDTO> tblEmpleados;
+    @FXML private TableColumn<EmpleadoDTO, String> colEmpId;
+    @FXML private TableColumn<EmpleadoDTO, String> colEmpNombre;
+    @FXML private TableColumn<EmpleadoDTO, String> colEmpRol;
+    @FXML private TableColumn<EmpleadoDTO, String> colEmpEstado;
 
-    private ObservableList<Empleado> empleados;
+    private ObservableList<EmpleadoDTO> empleados;
     private Minimercado minimercado = Minimercado.getInstancia();
+    private EmpresaAdminFacade empresaAdminFacade;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        empleados = FXCollections.observableArrayList(minimercado.getEmpleados());
+        empresaAdminFacade= new EmpresaAdminFacade();
+        empleados = FXCollections.observableArrayList(empresaAdminFacade.listarEmpleados());
         
         if (cmbEmpRol != null) {
             cmbEmpRol.setItems(FXCollections.observableArrayList("CAJERO", "BODEGUERO"));
@@ -63,12 +68,21 @@ public class EmpleadosController implements Initializable {
         }
         
         try {
-            Empleado emp = minimercado.crearEmpleado(id, nombre, rol);
-            empleados.add(emp);
-            if (tblEmpleados != null) tblEmpleados.refresh();
-            if (txtEmpId != null) txtEmpId.clear();
-            if (txtEmpNombre != null) txtEmpNombre.clear();
-            if (cmbEmpRol != null) cmbEmpRol.setValue("CAJERO");
+            EmpleadoDTO nuevoEmpleadoDTO = new EmpleadoDTO(id, nombre, EmpleadoDTO.Rol.valueOf(rol), true);
+            if(empresaAdminFacade.crearEmpleado(nuevoEmpleadoDTO)){
+                System.out.println("respuesta de creación del empleado: " + nuevoEmpleadoDTO);
+                empleados.add(nuevoEmpleadoDTO);
+                if (tblEmpleados != null) tblEmpleados.refresh();
+                if (txtEmpId != null) txtEmpId.clear();
+                if (txtEmpNombre != null) txtEmpNombre.clear();
+                if (cmbEmpRol != null) cmbEmpRol.setValue("CAJERO");
+                ObservableList<EmpleadoDTO> nuevaLista = FXCollections.observableArrayList(
+                        empresaAdminFacade.listarEmpleados()
+                );
+                if (tblEmpleados != null) {
+                    tblEmpleados.setItems(nuevaLista);
+                }
+            }
         } catch (IllegalArgumentException e) {
             mostrarError(e.getMessage());
         }
@@ -79,13 +93,26 @@ public class EmpleadosController implements Initializable {
         String id = txtEmpId != null ? txtEmpId.getText() : null;
         String nombre = txtEmpNombre != null ? txtEmpNombre.getText() : null;
         String rol = cmbEmpRol != null ? cmbEmpRol.getValue() : null;
-        if (id == null || id.trim().isEmpty()) { mostrarError("El ID es obligatorio"); return; }
+        if (id == null || id.trim().isEmpty()) {
+            mostrarError("El ID es obligatorio");
+            return;
+        }
         try {
-            Empleado actualizado = minimercado.actualizarEmpleado(id, nombre, rol, null);
-            for (int i = 0; i < empleados.size(); i++) {
-                if (empleados.get(i).getId().equals(id)) { empleados.set(i, actualizado); break; }
+            EmpleadoDTO empleadoActualizadoDTO= new EmpleadoDTO(id, nombre, EmpleadoDTO.Rol.valueOf(rol), true);
+            if(empresaAdminFacade.actualizarEmpleado(empleadoActualizadoDTO)){
+                for (int i = 0; i < empleados.size(); i++) {
+                    if (empleados.get(i).getId().equals(id)) { empleados.set(i, empleadoActualizadoDTO); break; }
+                }
+                if (tblEmpleados != null) {
+                    tblEmpleados.refresh();
+                }
+                ObservableList<EmpleadoDTO> nuevaLista = FXCollections.observableArrayList(
+                        empresaAdminFacade.listarEmpleados()
+                );
+                if (tblEmpleados != null) {
+                    tblEmpleados.setItems(nuevaLista);
+                }
             }
-            if (tblEmpleados != null) tblEmpleados.refresh();
         } catch (IllegalArgumentException e) {
             mostrarError(e.getMessage());
         }
@@ -94,11 +121,22 @@ public class EmpleadosController implements Initializable {
     @FXML
     void eliminarEmpleado() {
         String id = txtEmpId != null ? txtEmpId.getText() : null;
-        if (id == null || id.trim().isEmpty()) { mostrarError("El ID es obligatorio"); return; }
+        if (id == null || id.trim().isEmpty()) {
+            mostrarError("El ID es obligatorio");
+            return;
+        }
         try {
-            minimercado.eliminarEmpleado(id);
-            empleados.removeIf(e -> e.getId().equals(id));
-            if (tblEmpleados != null) tblEmpleados.refresh();
+            if(empresaAdminFacade.eliminarEmpleado(id)){
+                if (tblEmpleados != null) {
+                    tblEmpleados.refresh();
+                }
+                ObservableList<EmpleadoDTO> nuevaLista = FXCollections.observableArrayList(
+                        empresaAdminFacade.listarEmpleados()
+                );
+                if (tblEmpleados != null) {
+                    tblEmpleados.setItems(nuevaLista);
+                }
+            }
         } catch (IllegalArgumentException e) {
             mostrarError(e.getMessage());
         }
@@ -106,24 +144,48 @@ public class EmpleadosController implements Initializable {
 
     @FXML
     void activarEmpleado() {
+        //Se ajusta el metodo para que al realizar cambio, se actualice y/o refresque la tabla
         String id = txtEmpId != null ? txtEmpId.getText() : null;
-        if (id == null || id.trim().isEmpty()) { mostrarError("El ID es obligatorio"); return; }
+        if (id == null || id.trim().isEmpty()) {
+            mostrarError("El ID es obligatorio");
+            return;
+        }
         try {
-            Empleado actualizado = minimercado.actualizarEmpleado(id, null, null, true);
-            for (int i = 0; i < empleados.size(); i++) { if (empleados.get(i).getId().equals(id)) { empleados.set(i, actualizado); break; } }
-            if (tblEmpleados != null) tblEmpleados.refresh();
-        } catch (IllegalArgumentException e) { mostrarError(e.getMessage()); }
+            empresaAdminFacade.activarEmpleado(id);
+            ObservableList<EmpleadoDTO> nuevaLista = FXCollections.observableArrayList(
+                    empresaAdminFacade.listarEmpleados()
+            );
+            if (tblEmpleados != null) {
+                tblEmpleados.setItems(nuevaLista);
+            }
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        } catch (Exception e) {
+            mostrarError("Error al intentar activar el empleado.");
+        }
     }
 
     @FXML
     void inactivarEmpleado() {
+        //Se ajusta el metodo para que al realizar cambio, se actualice y/o refresque la tabla
         String id = txtEmpId != null ? txtEmpId.getText() : null;
-        if (id == null || id.trim().isEmpty()) { mostrarError("El ID es obligatorio"); return; }
+        if (id == null || id.trim().isEmpty()) {
+            mostrarError("El ID es obligatorio");
+            return;
+        }
         try {
-            Empleado actualizado = minimercado.actualizarEmpleado(id, null, null, false);
-            for (int i = 0; i < empleados.size(); i++) { if (empleados.get(i).getId().equals(id)) { empleados.set(i, actualizado); break; } }
-            if (tblEmpleados != null) tblEmpleados.refresh();
-        } catch (IllegalArgumentException e) { mostrarError(e.getMessage()); }
+            empresaAdminFacade.inactivarEmpleado(id);
+            ObservableList<EmpleadoDTO> nuevaLista = FXCollections.observableArrayList(
+                    empresaAdminFacade.listarEmpleados()
+            );
+            if (tblEmpleados != null) {
+                tblEmpleados.setItems(nuevaLista);
+            }
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        } catch (Exception e) {
+            mostrarError("Error al intentar inactivar el empleado.");
+        }
     }
 
     private void mostrarError(String mensaje) {

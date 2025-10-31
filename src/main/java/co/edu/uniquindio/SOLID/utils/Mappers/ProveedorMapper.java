@@ -14,8 +14,7 @@ public final class ProveedorMapper {
             dto.getNombre(),
             dto.getContacto(),
             dto.getEmail(),
-            dto.getTelefono(),
-            dto.getActivo()
+            dto.getTelefono()
         );
     }
 
@@ -28,8 +27,7 @@ public final class ProveedorMapper {
             proveedor.getNombre(),
             proveedor.getContacto(),
             proveedor.getEmail(),
-            proveedor.getTelefono(),
-            proveedor.isActivo()
+            proveedor.getTelefono()
         );
 
     }

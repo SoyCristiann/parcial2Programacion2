@@ -53,13 +53,25 @@ public class Minimercado {
         return clientes;
     }
 
+    //Empleados
+    public void addEmpleado(Empleado empleado) {
+        empleados.add(empleado);
+    }
     public List<Empleado> getEmpleados() { 
         return empleados; 
     }
 
+    //Proveedores
+
     public List<Proveedor> getProveedores() { 
         return proveedores; 
     }
+    public void addProveedor(Proveedor proveedor) {
+        proveedores.add(proveedor);
+    }
+
+
+
 
     public List<MovimientoInventario> getMovimientos() { 
         return movimientos; 
@@ -81,21 +93,4 @@ public class Minimercado {
         }
     }
 
-
-    // Nota: la confirmación y registro de movimientos se hace en EntradaInventario.confirmar()
-    public EntradaInventario registrarEntradaInventario(Proveedor proveedor, Producto producto, int cantidad) {
-        if (proveedor == null) {
-            throw new IllegalArgumentException("Se requiere un proveedor");
-        }
-        if (producto == null) {
-            throw new IllegalArgumentException("Se requiere un producto");
-        }
-        if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser mayor a 0");
-        }
-        EntradaInventario entrada = new EntradaInventario("ENT-" + System.currentTimeMillis(), proveedor);
-        entrada.agregarItem(producto, cantidad);
-        entrada.confirmar();
-        return entrada;
-    }
 }
