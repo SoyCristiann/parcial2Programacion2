@@ -1,9 +1,11 @@
 package co.edu.uniquindio.SOLID.Controlador;
 
+import co.edu.uniquindio.SOLID.Model.DTO.ProductoDTO;
 import co.edu.uniquindio.SOLID.Model.EntradaInventario;
 import co.edu.uniquindio.SOLID.Model.Minimercado;
 import co.edu.uniquindio.SOLID.Model.Producto;
 import co.edu.uniquindio.SOLID.Model.Proveedor;
+import co.edu.uniquindio.SOLID.Service.Fachadas.InventarioFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class InventarioController implements Initializable {
 
-    @FXML private ComboBox<Proveedor> cmbProveedores;
+    @FXML private ComboBox<ProveedorDTO> cmbProveedores;
     @FXML private TitledPane tpCrearProveedor;
     @FXML private TextField txtProvNit;
     @FXML private TextField txtProvNombre;
@@ -31,9 +33,10 @@ public class InventarioController implements Initializable {
     @FXML private TableColumn<Producto, Number> colInvPrecio;
     @FXML private TableColumn<Producto, Number> colInvStock;
 
-    private ObservableList<Proveedor> proveedores;
-    private ObservableList<Producto> productos;
+    private ObservableList<ProveedorDTO> proveedores;
+    private ObservableList<ProductoDTO> productos;
     private Minimercado minimercado = Minimercado.getInstancia();
+    private InventarioFacade inventario= new InventarioFacade();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -178,7 +181,7 @@ public class InventarioController implements Initializable {
         }
         
         try {
-            minimercado.registrarEntradaInventario(proveedor, prod, cant);
+            inventario.registrarEntradaInventario(proveedor, prod, cant);
             if (lblResultadoEntrada != null) lblResultadoEntrada.setText("Entrada confirmada. Stock " + prod.getSku() + ": " + prod.getStock());
             if (tblProductosInv != null) tblProductosInv.refresh();
         } catch (IllegalArgumentException e) {
