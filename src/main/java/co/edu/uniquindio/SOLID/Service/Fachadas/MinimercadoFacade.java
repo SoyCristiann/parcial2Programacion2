@@ -14,12 +14,10 @@ public class MinimercadoFacade {
     private final ClienteService clienteService;
     private final ProductoService productoService;
     private final PedidoService pedidoService;
-    private final ProveedorService proveedorService;
     
     public MinimercadoFacade() {
         this.clienteService = new ClienteService();
         this.productoService = new ProductoService();
-        this.proveedorService= new ProveedorService();
         CatalogoProductosService catalogoProductosService = new CatalogoProductosService();
         this.pedidoService = new PedidoService(catalogoProductosService);
     }
@@ -51,30 +49,7 @@ public class MinimercadoFacade {
         return clienteService.existeCliente(cedula);
     }
     
-    // Productos
-    public List<ProductoDTO> obtenerTodosLosProductos() {
-        return productoService.obtenerTodosLosProductos();
-    }
-    
-    public ProductoDTO buscarProductoPorSku(String sku) {
-        return productoService.buscarProductoPorSku(sku);
-    }
-    
-    public boolean agregarProducto(ProductoDTO productoDTO) {
-        return productoService.agregarProducto(productoDTO);
-    }
-    
-    public boolean actualizarProducto(ProductoDTO productoDTO) {
-        return productoService.actualizarProducto(productoDTO);
-    }
-    
-    public boolean eliminarProducto(String sku) {
-        return productoService.eliminarProducto(sku);
-    }
-    
-    public boolean existeProducto(String sku) {
-        return productoService.existeProducto(sku);
-    }
+
     
     // Pedidos
     public ResumenPedidoDTO procesarPedido(PedidoDTO pedidoDTO) {
@@ -91,18 +66,5 @@ public class MinimercadoFacade {
     
     public double calcularTotal(double subtotal, double costoEnvio) {
         return pedidoService.calcularTotal(subtotal, costoEnvio);
-    }
-
-    //Proveedores
-    public List<ProveedorDTO> obtenerTodosLosProveedores() {
-        return proveedorService.listarProveedores();
-    }
-
-    public boolean crearProveedor(ProveedorDTO proveedorDTO) {
-        return proveedorService.crearProveedor(proveedorDTO);
-    }
-
-    public boolean actualizarProveedor(ProveedorDTO proveedorDTO) {
-        return proveedorService.actualizarProveedor(proveedorDTO);
     }
 }

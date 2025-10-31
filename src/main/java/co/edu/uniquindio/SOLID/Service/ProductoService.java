@@ -94,4 +94,15 @@ public class ProductoService {
         }
         return null;
     }
+
+    /**
+     * Actualizar Stock de productos.
+     * */
+
+    public void actualizarStockProducto(ProductoDTO productoDTO){
+        List<Producto> productos= minimercado.getProductos();
+        for (Producto producto : productos) {
+            producto.getSku();
+        }
+    }
 }

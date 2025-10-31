@@ -1,74 +1,34 @@
 package co.edu.uniquindio.SOLID.Model.DTO;
 
+import co.edu.uniquindio.SOLID.Model.MovimientoInventario;
+import co.edu.uniquindio.SOLID.Model.Producto;
+
+import java.time.LocalDateTime;
+
 public class MovimientoInventarioDTO {
 
-    private String idMovimiento;
-    private String tipoMovimiento;
-    private String skuProductoMovimiento;
-    private String cantidadMovimiento;
-    private String referenciaMovimiento;
+    public enum Tipo { ENTRADA }
 
-    public MovimientoInventarioDTO() {
+    private String id;
+    private MovimientoInventario.Tipo tipo;
+    private LocalDateTime fecha;
+    private Producto producto;
+    private int cantidad;
+    private String referencia;
+
+    public MovimientoInventarioDTO(String id, MovimientoInventario.Tipo tipo, Producto producto, int cantidad, String referencia) {
+        this.id = id;
+        this.tipo = tipo;
+        this.fecha = LocalDateTime.now();
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.referencia = referencia;
     }
 
-    public MovimientoInventarioDTO(String id, String tipo, String sku, String cantidad, String referencia) {
-        this.idMovimiento= id;
-        this.tipoMovimiento= tipo;
-        this.skuProductoMovimiento= sku;
-        this.cantidadMovimiento= cantidad;
-        this.referenciaMovimiento= referencia;
-    }
-
-    //Opcionales get - set
-
-    public String getIdMovimiento() {
-        return idMovimiento;
-    }
-
-    public void setIdMovimiento(String id) {
-        this.idMovimiento = id;
-    }
-
-    public String getTipoMovimiento() {
-        return tipoMovimiento;
-    }
-
-    public void setTipoMovimiento(String tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
-    }
-
-    public String getSkuProductoMovimiento() {
-        return skuProductoMovimiento;
-    }
-
-    public void setSkuProductoMovimiento(String skuProductoMovimiento) {
-        this.skuProductoMovimiento = skuProductoMovimiento;
-    }
-
-    public String getCantidadMovimiento(){
-        return cantidadMovimiento;
-    }
-
-    public void setCantidadMovimiento(String cantidad) {
-        this.cantidadMovimiento = cantidad;
-    }
-
-    public String getReferenciaMovimiento(){
-        return referenciaMovimiento;
-    }
-
-    public void setReferenciaMovimiento(String referencia) {
-        this.referenciaMovimiento = referencia;
-    }
-
-    @Override
-    public String toString() {
-        return "MovimientoInventarioDTO{" +
-                "idMovimiento='" + idMovimiento + '\'' +
-                ", tipoMovimiento='" + tipoMovimiento + '\'' +
-                ", skuProductoMovimiento='" + skuProductoMovimiento + '\'' +
-                ", cantidadMovimiento='" + cantidadMovimiento + '\'' +
-                ", referenciaMovimiento='" + referenciaMovimiento + '\'' +
-                '}';
-    }
+    public String getId() { return id; }
+    public MovimientoInventario.Tipo getTipo() { return tipo; }
+    public LocalDateTime getFecha() { return fecha; }
+    public Producto getProducto() { return producto; }
+    public int getCantidad() { return cantidad; }
+    public String getReferencia() { return referencia; }
 }

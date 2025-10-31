@@ -26,7 +26,6 @@ public class EmpleadosController implements Initializable {
     @FXML private TableColumn<EmpleadoDTO, String> colEmpEstado;
 
     private ObservableList<EmpleadoDTO> empleados;
-    private Minimercado minimercado = Minimercado.getInstancia();
     private EmpresaAdminFacade empresaAdminFacade;
 
     @Override

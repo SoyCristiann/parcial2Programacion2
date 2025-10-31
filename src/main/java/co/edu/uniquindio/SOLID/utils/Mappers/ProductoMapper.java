@@ -7,11 +7,13 @@ public class ProductoMapper {
     
     public static ProductoDTO toDTO(Producto producto) {
         if (producto == null) return null;
-        return new ProductoDTO(
+        ProductoDTO productoDTO= new ProductoDTO(
             producto.getSku(),
             producto.getNombre(),
             producto.getPrecio()
         );
+        productoDTO.setStock(producto.getStock());
+        return productoDTO;
     }
     
     public static Producto toEntity(ProductoDTO dto) {
