@@ -15,7 +15,7 @@ public class ProveedorDTO {
         this.contacto = contacto;
         this.email = email;
         this.telefono = telefono;
-        this.activo = true;
+        this.activo = activo;
     }
 
     public String getNit() {
