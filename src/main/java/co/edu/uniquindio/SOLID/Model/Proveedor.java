@@ -8,7 +8,7 @@ public class Proveedor {
     private String telefono;
     private boolean activo;
 
-    public Proveedor(String nit, String nombre, String contacto, String email, String telefono, boolean activo) {
+    public Proveedor(String nit, String nombre, String contacto, String email, String telefono) {
         this.nit = nit;
         this.nombre = nombre;
         this.contacto = contacto;
@@ -46,6 +46,7 @@ public class Proveedor {
 
     @Override
     public String toString() {
+
         return nombre != null ? nombre : (nit != null ? nit : "");
     }
 }

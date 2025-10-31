@@ -9,11 +9,13 @@ public class ProductoDTO {
     private StringProperty sku;
     private StringProperty nombre;
     private DoubleProperty precio;
+    private int stock;
 
     public ProductoDTO() {
         this.sku = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
         this.precio = new SimpleDoubleProperty();
+        this.stock = 0;
     }
 
     public ProductoDTO(String sku, String nombre, double precio) {
@@ -26,6 +28,7 @@ public class ProductoDTO {
     public String getSku() { return sku.get(); }
     public String getNombre() { return nombre.get(); }
     public double getPrecio() { return precio.get(); }
+    public int getStock() {return stock;}
 
     public void setSku(String sku) { this.sku.set(sku); }
     public void setNombre(String nombre) { this.nombre.set(nombre); }

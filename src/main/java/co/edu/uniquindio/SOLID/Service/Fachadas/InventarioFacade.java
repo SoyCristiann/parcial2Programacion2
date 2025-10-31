@@ -19,4 +19,15 @@ public class InventarioFacade {
     public EntradaInventario registrarEntradaInventario(Proveedor proveedor, Producto producto, int cantidad) {
         return inventarioService.registrarEntradaInventario(proveedor, producto, cantidad);
     }
+
+/*
+    listarProveedores(): List<ProveedorDTO>
+○ crearProveedor(ProveedorDTO): Respuesta
+○ actualizarProveedor(ProveedorDTO): Respuesta
+○ eliminarProveedor(String nit): Respuesta
+○ activarProveedor(String nit): Respuesta
+○ inactivarProveedor(String nit): Respuesta
+○ listarProductos(): List<ProductoDTO>
+○ registrarEntrada(EntradaInventarioDTO)
+○ listarMovimientos(): List<MovimientoInventarioDTO>*/
 }
