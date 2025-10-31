@@ -90,9 +90,9 @@ public class AppSetup {
 
     public void inicializarProveedores() {
         Minimercado minimercado = Minimercado.getInstancia();
-        minimercado.agregarProveedor(new Proveedor("900111222-3", "Cafés del Quindío S.A.", "Diana Torres", "compras@cafesquindio.com", "606-7440001"));
-        minimercado.agregarProveedor(new Proveedor("901234567-8", "Agrofrutas del Eje", "Luis Mejía", "ventas@agrofrutas.com", "606-7331122"));
-        minimercado.agregarProveedor(new Proveedor("900765432-1", "Lácteos Andinos", "María Rojas", "contacto@lacteosandinos.co", "606-7213344"));
+        minimercado.agregarProveedor(new Proveedor("900111222-3", "Cafés del Quindío S.A.", "Diana Torres", "compras@cafesquindio.com", "606-7440001", dto.getActivo()));
+        minimercado.agregarProveedor(new Proveedor("901234567-8", "Agrofrutas del Eje", "Luis Mejía", "ventas@agrofrutas.com", "606-7331122", dto.getActivo()));
+        minimercado.agregarProveedor(new Proveedor("900765432-1", "Lácteos Andinos", "María Rojas", "contacto@lacteosandinos.co", "606-7213344", dto.getActivo()));
     }
 
     public void inicializarEmpleados() {

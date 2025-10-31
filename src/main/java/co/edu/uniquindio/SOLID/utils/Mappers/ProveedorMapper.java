@@ -1,0 +1,49 @@
+package co.edu.uniquindio.SOLID.utils.Mappers;
+
+import co.edu.uniquindio.SOLID.Model.DTO.ProductoDTO;
+import co.edu.uniquindio.SOLID.Model.DTO.ProveedorDTO;
+import co.edu.uniquindio.SOLID.Model.Producto;
+import co.edu.uniquindio.SOLID.Model.Proveedor;
+
+public final class ProveedorMapper {
+
+    public static Proveedor toEntity(ProveedorDTO dto) {
+        if(dto == null){return null;}
+        return new Proveedor(
+            dto.getNit(),
+            dto.getNombre(),
+            dto.getContacto(),
+            dto.getEmail(),
+            dto.getTelefono(),
+            dto.getActivo()
+        );
+    }
+
+
+
+    public static ProveedorDTO toDTO(Proveedor proveedor) {
+        if(proveedor == null){return null;}
+        return new ProveedorDTO(
+            proveedor.getNit(),
+            proveedor.getNombre(),
+            proveedor.getContacto(),
+            proveedor.getEmail(),
+            proveedor.getTelefono(),
+            proveedor.isActivo()
+        );
+
+    }
+
+
+    public static void updateEntityFromDTO(Proveedor proveedor, ProveedorDTO dto) {
+        if (proveedor == null || dto == null) return;
+        proveedor.setNombre(dto.getNombre());
+        proveedor.setContacto(dto.getContacto());
+        proveedor.setEmail(dto.getEmail());
+        proveedor.setTelefono(dto.getTelefono());
+        proveedor.setActivo(dto.getActivo());
+
+    }
+
+
+}
