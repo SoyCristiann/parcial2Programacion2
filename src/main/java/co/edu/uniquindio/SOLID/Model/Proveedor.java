@@ -8,7 +8,7 @@ public class Proveedor {
     private String telefono;
     private boolean activo;
 
-    public Proveedor(String nit, String nombre, String contacto, String email, String telefono) {
+    public Proveedor(String nit, String nombre, String contacto, String email, String telefono, boolean activo) {
         this.nit = nit;
         this.nombre = nombre;
         this.contacto = contacto;
@@ -28,6 +28,9 @@ public class Proveedor {
     public void setContacto(String contacto) { this.contacto = contacto; }
     public void setEmail(String email) { this.email = email; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public  void setActivo(boolean activo) { this.activo = activo; }
+
     public void inactivar() { this.activo = false; }
     public void activar() { this.activo = true; }
 
